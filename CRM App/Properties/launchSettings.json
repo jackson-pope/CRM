@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CRM App (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "CRM App (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
