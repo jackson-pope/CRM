@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Backend.ViewModels;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -26,6 +27,7 @@ namespace CRM_App
         public MainWindow()
         {
             this.InitializeComponent();
+            MainStackPanel.DataContext = App.Current.Services.GetService(typeof(MainViewModel));
         }
 
         private void myButton_Click(object sender, RoutedEventArgs e)
