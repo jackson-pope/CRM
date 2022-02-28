@@ -27,12 +27,7 @@ namespace CRM_App
         public MainWindow()
         {
             this.InitializeComponent();
-            MainStackPanel.DataContext = App.Current.Services.GetService(typeof(MainViewModel));
-        }
-
-        private void myButton_Click(object sender, RoutedEventArgs e)
-        {
-            myButton.Content = "Clicked";
+            MainGrid.DataContext = App.Current.Services.GetService(typeof(MainViewModel));
         }
     }
 }
