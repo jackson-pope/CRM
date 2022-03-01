@@ -15,12 +15,21 @@
                         CanUserSortColumns="True"
                         SelectionMode="Single"
                         IsReadOnly="True"
-                        VerticalScrollBarVisibility="Auto">
+                        VerticalScrollBarVisibility="Auto"
+                        AlternatingRowBackground="LightGray">
                 <ctWinUi:DataGrid.Columns>
                     <ctWinUi:DataGridTextColumn Header="Name" Binding="{Binding Name}" Tag="Name" />
                     <ctWinUi:DataGridTextColumn Header="Email" Binding="{Binding EmailAddress}" Tag="Email" />
                     <ctWinUi:DataGridTextColumn Header="Country" Binding="{Binding Country}" Tag="Country" />
-                    <ctWinUi:DataGridTextColumn Header="LTV" Binding="{Binding LTV}" Tag="LTV" />
+                    <ctWinUi:DataGridTextColumn Header="LTV" Binding="{Binding LtvDisplay}" Tag="LTV">
+                        <ctWinUi:DataGridTextColumn.CellStyle>
+                            <Style TargetType="ctWinUi:DataGridCell">
+                                <Style.Setters>
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                </Style.Setters>
+                            </Style>
+                        </ctWinUi:DataGridTextColumn.CellStyle>
+                    </ctWinUi:DataGridTextColumn>
                 </ctWinUi:DataGrid.Columns>
             </ctWinUi:DataGrid>
         </Grid.Children>

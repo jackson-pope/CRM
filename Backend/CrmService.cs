@@ -1,4 +1,5 @@
 ﻿using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend
 {
@@ -21,7 +22,7 @@ namespace Backend
 
         public List<Customer> GetAllCustomers()
         {
-            return _context.Customers.OrderBy(c => c.Name).ToList();
+            return _context.Customers.Include(c => c.Invoices).OrderBy(c => c.Name).ToList();
         }
     }
 }

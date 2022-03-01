@@ -9,6 +9,7 @@ namespace Backend
         public string Country { get; private set; }
         public string EmailAddress { get; private set; }
         public decimal LTV { get; private set; }
+        public string LtvDisplay { get; }
 
         public CustomerOverview(Customer customer)
         {
@@ -17,6 +18,7 @@ namespace Backend
             Country = customer.Country;
             EmailAddress = customer.EmailAddress;
             LTV = customer.Invoices.Sum(i => i.InvoiceTotal);
+            LtvDisplay = LTV == 0M ? "-" : LTV.ToString("C");
         }
     }
 }
