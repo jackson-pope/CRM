@@ -1,4 +1,5 @@
-﻿using Backend.ViewModels;
+﻿using Backend.Models;
+using Backend.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -42,6 +43,7 @@ namespace CRM_App
         private static IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
+            services.AddSingleton<CrmContext>();
             services.AddSingleton<MainViewModel>();
             return services.BuildServiceProvider();
         }

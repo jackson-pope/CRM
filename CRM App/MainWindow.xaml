@@ -13,6 +13,7 @@
                         ItemsSource="{Binding Customers}"
                         AutoGenerateColumns="False"
                         CanUserSortColumns="True"
+                        Sorting="DataGrid_Sorting"
                         SelectionMode="Single"
                         IsReadOnly="True"
                         VerticalScrollBarVisibility="Auto"
