@@ -64,5 +64,29 @@ namespace BackendTests
             Assert.That(vm.Customers[1].Name, Is.EqualTo("Bertie"));
             Assert.That(vm.Customers[2].Name, Is.EqualTo("Archie"));
         }
+
+        [Test]
+        public void Sort_WhenSortingOnEmailAscending_SortsCorrectly()
+        {
+
+            var vm = new MainViewModel(_provider);
+            vm.SortData("Email", SortDirection.Ascending);
+
+            Assert.That(vm.Customers[0].EmailAddress, Is.EqualTo("bertie@example.com"));
+            Assert.That(vm.Customers[1].EmailAddress, Is.EqualTo("c.overview@example.com"));
+            Assert.That(vm.Customers[2].EmailAddress, Is.EqualTo("overview.archie@example.com"));
+        }
+
+        [Test]
+        public void Sort_WhenSortingOnEmailDescending_SortsCorrectly()
+        {
+
+            var vm = new MainViewModel(_provider);
+            vm.SortData("Email", SortDirection.Descending);
+
+            Assert.That(vm.Customers[0].EmailAddress, Is.EqualTo("overview.archie@example.com"));
+            Assert.That(vm.Customers[1].EmailAddress, Is.EqualTo("c.overview@example.com"));
+            Assert.That(vm.Customers[2].EmailAddress, Is.EqualTo("bertie@example.com"));
+        }
     }
 }

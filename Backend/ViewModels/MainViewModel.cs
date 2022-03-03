@@ -32,11 +32,17 @@ namespace Backend.ViewModels
         {
             switch (columnName)
             {
-                case "Name": 
+                case "Name":
                     if (direction == SortDirection.Ascending)
                         Customers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).OrderBy(c => c.Name).ToList();
                     else
                         Customers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).OrderByDescending(c => c.Name).ToList();
+                    break;
+                case "Email":
+                    if (direction == SortDirection.Ascending)
+                        Customers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).OrderBy(c => c.EmailAddress).ToList();
+                    else
+                        Customers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).OrderByDescending(c => c.EmailAddress).ToList();
                     break;
                 default:
                     Customers = new List<CustomerOverview>();
