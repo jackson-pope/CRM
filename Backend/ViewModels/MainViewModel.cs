@@ -25,42 +25,47 @@ namespace Backend.ViewModels
             _service = new CrmService((CrmContext)provider.GetService(typeof(CrmContext)));
             _customers = new List<CustomerOverview>();
 
-            Customers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).ToList();
+            SortData("LTV", SortDirection.Descending);
         }
 
         public void SortData(string columnName, SortDirection direction)
         {
             var input = _service.GetAllCustomers().Select(c => new CustomerOverview(c));
+            var sorted = Enumerable.Empty<CustomerOverview>();
             switch (columnName)
             {
                 case "Name":
+                    CachedSortedColumn = "Name";
                     if (direction == SortDirection.Ascending)
-                        Customers = input.OrderBy(c => c.Name).ToList();
+                        sorted = input.OrderBy(c => c.Name);
                     else
-                        Customers = input.OrderByDescending(c => c.Name).ToList();
+                        sorted = input.OrderByDescending(c => c.Name);
                     break;
                 case "Email":
+                    CachedSortedColumn = "Email";
                     if (direction == SortDirection.Ascending)
-                        Customers = input.OrderBy(c => c.EmailAddress).ToList();
+                        sorted = input.OrderBy(c => c.EmailAddress);
                     else
-                        Customers = input.OrderByDescending(c => c.EmailAddress).ToList();
+                        sorted = input.OrderByDescending(c => c.EmailAddress);
                     break;
                 case "Country":
+                    CachedSortedColumn = "Country";
                     if (direction == SortDirection.Ascending)
-                        Customers = input.OrderBy(c => c.Country).ToList();
+                        sorted = input.OrderBy(c => c.Country);
                     else
-                        Customers = input.OrderByDescending(c => c.Country).ToList();
+                        sorted = input.OrderByDescending(c => c.Country);
                     break;
                 case "LTV":
+                    CachedSortedColumn = "LTV";
                     if (direction == SortDirection.Ascending)
-                        Customers = input.OrderBy(c => c.LTV).ToList();
+                        sorted = input.OrderBy(c => c.LTV);
                     else
-                        Customers = input.OrderByDescending(c => c.LTV).ToList();
+                        sorted = input.OrderByDescending(c => c.LTV);
                     break;
                 default:
-                    Customers = new List<CustomerOverview>();
                     break;
             }
+            Customers = sorted.ToList();
         }
     }
 }
