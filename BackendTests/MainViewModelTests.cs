@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 
-using Backend;
 using Backend.Models;
 using Backend.ViewModels;
 
@@ -48,7 +47,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Assert
-            Assert.That(vm.CachedSortedColumn, Is.EqualTo("LTV"));
+            Assert.That(vm.SortedColumn, Is.EqualTo("LTV"));
         }
 
         [Test]
@@ -58,7 +57,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Name", SortDirection.Ascending);
+            vm.SortCustomers("Name", SortDirection.Ascending);
 
             // Assert
             CollectionAssert.AreEqual(new string[] { "Archie", "Bertie", "Chuck"}, vm.Customers.Select(c => c.Name));
@@ -71,7 +70,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Name", SortDirection.Descending);
+            vm.SortCustomers("Name", SortDirection.Descending);
 
             // Assert
             CollectionAssert.AreEqual(new string[] { "Chuck", "Bertie", "Archie" }, vm.Customers.Select(c => c.Name));
@@ -84,7 +83,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Email", SortDirection.Ascending);
+            vm.SortCustomers("Email", SortDirection.Ascending);
 
             // Assert
             CollectionAssert.AreEqual(new string[] { "bertie@example.com", "c.overview@example.com", "overview.archie@example.com" }, vm.Customers.Select(c => c.EmailAddress));
@@ -97,7 +96,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Email", SortDirection.Descending);
+            vm.SortCustomers("Email", SortDirection.Descending);
 
             // Assert
             CollectionAssert.AreEqual(new string[] { "overview.archie@example.com", "c.overview@example.com", "bertie@example.com" }, vm.Customers.Select(c => c.EmailAddress));
@@ -110,7 +109,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Country", SortDirection.Ascending);
+            vm.SortCustomers("Country", SortDirection.Ascending);
 
             // Assert
             CollectionAssert.AreEqual(new string[] { "Belgium", "France", "UK" }, vm.Customers.Select(c => c.Country));
@@ -123,7 +122,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Country", SortDirection.Descending);
+            vm.SortCustomers("Country", SortDirection.Descending);
 
             // Assert
             CollectionAssert.AreEqual(new string[] { "UK", "France", "Belgium" }, vm.Customers.Select(c => c.Country));
@@ -136,7 +135,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("LTV", SortDirection.Ascending);
+            vm.SortCustomers("LTV", SortDirection.Ascending);
 
             // Assert
             CollectionAssert.AreEqual(new decimal[] { 0.0M, 10.0M, 20.0M }, vm.Customers.Select(c => c.LTV));
@@ -149,7 +148,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("LTV", SortDirection.Descending);
+            vm.SortCustomers("LTV", SortDirection.Descending);
 
             // Assert
             CollectionAssert.AreEqual(new decimal[] { 20.0M, 10.0M, 0.0M }, vm.Customers.Select(c => c.LTV));
@@ -163,10 +162,10 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Name", SortDirection.Descending);
+            vm.SortCustomers("Name", SortDirection.Descending);
 
             // Assert
-            Assert.That(vm.CachedSortedColumn, Is.EqualTo("Name"));
+            Assert.That(vm.SortedColumn, Is.EqualTo("Name"));
         }
 
         [Test]
@@ -176,10 +175,10 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Email", SortDirection.Ascending);
+            vm.SortCustomers("Email", SortDirection.Ascending);
 
             // Assert
-            Assert.That(vm.CachedSortedColumn, Is.EqualTo("Email"));
+            Assert.That(vm.SortedColumn, Is.EqualTo("Email"));
         }
 
         [Test]
@@ -189,10 +188,10 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Email", SortDirection.Descending);
+            vm.SortCustomers("Email", SortDirection.Descending);
 
             // Assert
-            Assert.That(vm.CachedSortedColumn, Is.EqualTo("Email"));
+            Assert.That(vm.SortedColumn, Is.EqualTo("Email"));
         }
 
         [Test]
@@ -202,10 +201,10 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Country", SortDirection.Ascending);
+            vm.SortCustomers("Country", SortDirection.Ascending);
 
             // Assert
-            Assert.That(vm.CachedSortedColumn, Is.EqualTo("Country"));
+            Assert.That(vm.SortedColumn, Is.EqualTo("Country"));
         }
 
         [Test]
@@ -215,10 +214,10 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("Country", SortDirection.Descending);
+            vm.SortCustomers("Country", SortDirection.Descending);
 
             // Assert
-            Assert.That(vm.CachedSortedColumn, Is.EqualTo("Country"));
+            Assert.That(vm.SortedColumn, Is.EqualTo("Country"));
         }
 
         [Test]
@@ -228,10 +227,10 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("LTV", SortDirection.Ascending);
+            vm.SortCustomers("LTV", SortDirection.Ascending);
 
             // Assert
-            Assert.That(vm.CachedSortedColumn, Is.EqualTo("LTV"));
+            Assert.That(vm.SortedColumn, Is.EqualTo("LTV"));
         }
 
         [Test]
@@ -241,10 +240,77 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
 
             // Act
-            vm.SortData("LTV", SortDirection.Descending);
+            vm.SortCustomers("LTV", SortDirection.Descending);
 
             // Assert
-            Assert.That(vm.CachedSortedColumn, Is.EqualTo("LTV"));
+            Assert.That(vm.SortedColumn, Is.EqualTo("LTV"));
+        }
+
+        [Test]
+        public void Filtering_WhenFilterNotPresent_ReturnsNothing()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+
+            // Act
+            vm.FilterCustomers("Goats");
+
+            // Assert
+            CollectionAssert.IsEmpty(vm.Customers);
+        }
+
+        [Test]
+        public void Filtering_WhenFilterInName_ReturnsMatches()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+
+            // Act
+            vm.FilterCustomers("uck");
+
+            // Assert
+            CollectionAssert.AreEqual(new string[] { "Chuck" }, vm.Customers.Select(c => c.Name));
+        }
+
+        [Test]
+        public void Filtering_WhenFilterInEmail_ReturnsMatches()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+
+            // Act
+            vm.FilterCustomers("view");
+
+            // Assert
+            CollectionAssert.AreEqual(new string[] { "Chuck", "Archie" }, vm.Customers.Select(c => c.Name));
+        }
+
+        [Test]
+        public void Filtering_AfterSorting_ReturnsMatchesInLastSortOrder()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+            vm.SortCustomers("Name", SortDirection.Ascending);
+
+            // Act
+            vm.FilterCustomers("view");
+
+            // Assert
+            CollectionAssert.AreEqual(new string[] { "Archie", "Chuck" }, vm.Customers.Select(c => c.Name));
+        }
+
+        [Test]
+        public void ClearingFilter_AfterFiltering_ReturnsFullList()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+            vm.FilterCustomers("Goats");
+
+            // Act
+            vm.FilterCustomers("");
+
+            // Assert
+            CollectionAssert.AreEqual(new string[] { "Chuck", "Archie", "Bertie" }, vm.Customers.Select(c => c.Name));
         }
     }
 }

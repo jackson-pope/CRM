@@ -39,7 +39,7 @@ namespace CRM_App
             var dataGrid = (DataGrid)sender;
 
             // Clear previous sorted column if we start sorting a different column
-            string previousSortedColumn = _viewModel.CachedSortedColumn;
+            string previousSortedColumn = _viewModel.SortedColumn;
             if (previousSortedColumn != string.Empty)
             {
                 foreach (DataGridColumn dataGridColumn in dataGrid.Columns)
@@ -57,12 +57,12 @@ namespace CRM_App
             {
                 if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
                 {
-                    _viewModel.SortData(e.Column.Tag.ToString(), SortDirection.Ascending);
+                    _viewModel.SortCustomers(e.Column.Tag.ToString(), SortDirection.Ascending);
                     e.Column.SortDirection = DataGridSortDirection.Ascending;
                 }
                 else
                 {
-                    _viewModel.SortData(e.Column.Tag.ToString(), SortDirection.Descending);
+                    _viewModel.SortCustomers(e.Column.Tag.ToString(), SortDirection.Descending);
                     e.Column.SortDirection = DataGridSortDirection.Descending;
                 }
             }

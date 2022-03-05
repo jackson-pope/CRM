@@ -1,7 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 using Backend.Models;
-using System.Collections;
 
 namespace Backend.ViewModels
 {
@@ -15,57 +14,73 @@ namespace Backend.ViewModels
     public class MainViewModel : ObservableObject
     {
         private CrmService _service;
-        private List<CustomerOverview> _customers;
-        public string? CachedSortedColumn { get; private set; }
+        private List<CustomerOverview> _allCustomers;
 
+        public string? SortedColumn { get; private set; }
+        public SortDirection SortedDirection { get; private set; }
+
+        private string _filter = string.Empty;
+        public string? Filter { get => _filter; private set => SetProperty(ref _filter, value); }
+
+        private List<CustomerOverview> _customers;
         public List<CustomerOverview> Customers { get => _customers; private set => SetProperty(ref _customers, value); }
 
         public MainViewModel(IServiceProvider provider)
         {
             _service = new CrmService((CrmContext)provider.GetService(typeof(CrmContext)));
-            _customers = new List<CustomerOverview>();
+            _allCustomers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).ToList();
 
-            SortData("LTV", SortDirection.Descending);
+            SortCustomers("LTV", SortDirection.Descending);
+        }
+        public void SortCustomers(string columnName, SortDirection direction)
+        {
+            SortedColumn = columnName;
+            SortedDirection = direction;
+
+            BuildCustomerList();
         }
 
-        public void SortData(string columnName, SortDirection direction)
+        public void FilterCustomers(string filter)
         {
-            var input = _service.GetAllCustomers().Select(c => new CustomerOverview(c));
-            var sorted = Enumerable.Empty<CustomerOverview>();
-            switch (columnName)
+            Filter = filter;
+
+            BuildCustomerList();
+        }
+
+        public void BuildCustomerList()
+        {
+            var filtered = _allCustomers.Where(c => c.Name.Contains(_filter) || c.EmailAddress.Contains(_filter));
+            IEnumerable<CustomerOverview> sorted = Enumerable.Empty<CustomerOverview>();
+            switch (SortedColumn)
             {
                 case "Name":
-                    CachedSortedColumn = "Name";
-                    if (direction == SortDirection.Ascending)
-                        sorted = input.OrderBy(c => c.Name);
+                    if (SortedDirection == SortDirection.Ascending)
+                        sorted = filtered.OrderBy(c => c.Name);
                     else
-                        sorted = input.OrderByDescending(c => c.Name);
+                        sorted = filtered.OrderByDescending(c => c.Name);
                     break;
                 case "Email":
-                    CachedSortedColumn = "Email";
-                    if (direction == SortDirection.Ascending)
-                        sorted = input.OrderBy(c => c.EmailAddress);
+                    if (SortedDirection == SortDirection.Ascending)
+                        sorted = filtered.OrderBy(c => c.EmailAddress);
                     else
-                        sorted = input.OrderByDescending(c => c.EmailAddress);
+                        sorted = filtered.OrderByDescending(c => c.EmailAddress);
                     break;
                 case "Country":
-                    CachedSortedColumn = "Country";
-                    if (direction == SortDirection.Ascending)
-                        sorted = input.OrderBy(c => c.Country);
+                    if (SortedDirection == SortDirection.Ascending)
+                        sorted = filtered.OrderBy(c => c.Country);
                     else
-                        sorted = input.OrderByDescending(c => c.Country);
+                        sorted = filtered.OrderByDescending(c => c.Country);
                     break;
                 case "LTV":
-                    CachedSortedColumn = "LTV";
-                    if (direction == SortDirection.Ascending)
-                        sorted = input.OrderBy(c => c.LTV);
+                    if (SortedDirection == SortDirection.Ascending)
+                        sorted = filtered.OrderBy(c => c.LTV);
                     else
-                        sorted = input.OrderByDescending(c => c.LTV);
+                        sorted = filtered.OrderByDescending(c => c.LTV);
                     break;
                 default:
                     break;
             }
             Customers = sorted.ToList();
         }
-    }
+   }
 }

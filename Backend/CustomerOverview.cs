@@ -13,9 +13,12 @@ namespace Backend
 
         public CustomerOverview(Customer customer)
         {
+            if (customer == null)
+                throw new ArgumentNullException("Customer cannot be null when creating an overview");
+
             Id = customer.Id;
-            Name = customer.Name;
-            Country = customer.Country;
+            Name = customer.Name ?? string.Empty;
+            Country = customer.Country ?? string.Empty;
             EmailAddress = customer.EmailAddress;
             LTV = customer.Invoices.Sum(i => i.InvoiceTotal);
             LtvDisplay = LTV == 0M ? "-" : LTV.ToString("C");
