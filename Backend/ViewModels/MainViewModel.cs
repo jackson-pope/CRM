@@ -30,19 +30,26 @@ namespace Backend.ViewModels
 
         public void SortData(string columnName, SortDirection direction)
         {
+            var input = _service.GetAllCustomers().Select(c => new CustomerOverview(c));
             switch (columnName)
             {
                 case "Name":
                     if (direction == SortDirection.Ascending)
-                        Customers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).OrderBy(c => c.Name).ToList();
+                        Customers = input.OrderBy(c => c.Name).ToList();
                     else
-                        Customers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).OrderByDescending(c => c.Name).ToList();
+                        Customers = input.OrderByDescending(c => c.Name).ToList();
                     break;
                 case "Email":
                     if (direction == SortDirection.Ascending)
-                        Customers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).OrderBy(c => c.EmailAddress).ToList();
+                        Customers = input.OrderBy(c => c.EmailAddress).ToList();
                     else
-                        Customers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).OrderByDescending(c => c.EmailAddress).ToList();
+                        Customers = input.OrderByDescending(c => c.EmailAddress).ToList();
+                    break;
+                case "Country":
+                    if (direction == SortDirection.Ascending)
+                        Customers = input.OrderBy(c => c.Country).ToList();
+                    else
+                        Customers = input.OrderByDescending(c => c.Country).ToList();
                     break;
                 default:
                     Customers = new List<CustomerOverview>();

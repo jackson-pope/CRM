@@ -48,9 +48,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
             vm.SortData("Name", SortDirection.Ascending);
 
-            Assert.That(vm.Customers[0].Name, Is.EqualTo("Archie"));
-            Assert.That(vm.Customers[1].Name, Is.EqualTo("Bertie"));
-            Assert.That(vm.Customers[2].Name, Is.EqualTo("Chuck"));
+            CollectionAssert.AreEqual(new string[] { "Archie", "Bertie", "Chuck"}, vm.Customers.Select(c => c.Name));
         }
 
         [Test]
@@ -60,9 +58,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
             vm.SortData("Name", SortDirection.Descending);
 
-            Assert.That(vm.Customers[0].Name, Is.EqualTo("Chuck"));
-            Assert.That(vm.Customers[1].Name, Is.EqualTo("Bertie"));
-            Assert.That(vm.Customers[2].Name, Is.EqualTo("Archie"));
+            CollectionAssert.AreEqual(new string[] { "Chuck", "Bertie", "Archie" }, vm.Customers.Select(c => c.Name));
         }
 
         [Test]
@@ -72,9 +68,7 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
             vm.SortData("Email", SortDirection.Ascending);
 
-            Assert.That(vm.Customers[0].EmailAddress, Is.EqualTo("bertie@example.com"));
-            Assert.That(vm.Customers[1].EmailAddress, Is.EqualTo("c.overview@example.com"));
-            Assert.That(vm.Customers[2].EmailAddress, Is.EqualTo("overview.archie@example.com"));
+            CollectionAssert.AreEqual(new string[] { "bertie@example.com", "c.overview@example.com", "overview.archie@example.com" }, vm.Customers.Select(c => c.EmailAddress));
         }
 
         [Test]
@@ -84,9 +78,27 @@ namespace BackendTests
             var vm = new MainViewModel(_provider);
             vm.SortData("Email", SortDirection.Descending);
 
-            Assert.That(vm.Customers[0].EmailAddress, Is.EqualTo("overview.archie@example.com"));
-            Assert.That(vm.Customers[1].EmailAddress, Is.EqualTo("c.overview@example.com"));
-            Assert.That(vm.Customers[2].EmailAddress, Is.EqualTo("bertie@example.com"));
+            CollectionAssert.AreEqual(new string[] { "overview.archie@example.com", "c.overview@example.com", "bertie@example.com" }, vm.Customers.Select(c => c.EmailAddress));
+        }
+
+        [Test]
+        public void Sort_WhenSortingOnCountry_SortsCorrectly()
+        {
+
+            var vm = new MainViewModel(_provider);
+            vm.SortData("Country", SortDirection.Ascending);
+
+            CollectionAssert.AreEqual(new string[] { "Belgium", "France", "UK" }, vm.Customers.Select(c => c.Country));
+        }
+
+        [Test]
+        public void Sort_WhenSortingOnCountryDescending_SortsCorrectly()
+        {
+
+            var vm = new MainViewModel(_provider);
+            vm.SortData("Country", SortDirection.Descending);
+
+            CollectionAssert.AreEqual(new string[] { "UK", "France", "Belgium" }, vm.Customers.Select(c => c.Country));
         }
     }
 }
