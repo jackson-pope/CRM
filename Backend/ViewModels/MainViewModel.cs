@@ -51,6 +51,12 @@ namespace Backend.ViewModels
                     else
                         Customers = input.OrderByDescending(c => c.Country).ToList();
                     break;
+                case "LTV":
+                    if (direction == SortDirection.Ascending)
+                        Customers = input.OrderBy(c => c.LTV).ToList();
+                    else
+                        Customers = input.OrderByDescending(c => c.LTV).ToList();
+                    break;
                 default:
                     Customers = new List<CustomerOverview>();
                     break;

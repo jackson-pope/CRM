@@ -100,5 +100,25 @@ namespace BackendTests
 
             CollectionAssert.AreEqual(new string[] { "UK", "France", "Belgium" }, vm.Customers.Select(c => c.Country));
         }
+
+        [Test]
+        public void Sort_WhenSortingOnLtv_SortsCorrectly()
+        {
+
+            var vm = new MainViewModel(_provider);
+            vm.SortData("LTV", SortDirection.Ascending);
+
+            CollectionAssert.AreEqual(new decimal[] { 0.0M, 10.0M, 20.0M }, vm.Customers.Select(c => c.LTV));
+        }
+
+        [Test]
+        public void Sort_WhenSortingOnLtvDescending_SortsCorrectly()
+        {
+
+            var vm = new MainViewModel(_provider);
+            vm.SortData("LTV", SortDirection.Descending);
+
+            CollectionAssert.AreEqual(new decimal[] { 20.0M, 10.0M, 0.0M }, vm.Customers.Select(c => c.LTV));
+        }
     }
 }
