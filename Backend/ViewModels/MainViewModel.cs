@@ -20,7 +20,7 @@ namespace Backend.ViewModels
         public SortDirection SortedDirection { get; private set; }
 
         private string _filter = string.Empty;
-        public string? Filter { get => _filter; private set => SetProperty(ref _filter, value); }
+        public string? Filter { get => _filter; set { FilterCustomers(value); } }
 
         private List<CustomerOverview> _customers;
         public List<CustomerOverview> Customers { get => _customers; private set => SetProperty(ref _customers, value); }
@@ -42,7 +42,7 @@ namespace Backend.ViewModels
 
         public void FilterCustomers(string filter)
         {
-            Filter = filter;
+            SetProperty(ref _filter, filter);
 
             BuildCustomerList();
         }
