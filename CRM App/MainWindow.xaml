@@ -7,13 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="MainGrid" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+    <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         <Grid.Children>
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" Grid.Column="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -33,10 +37,10 @@
                         VerticalScrollBarVisibility="Auto"
                         AlternatingRowBackground="LightGray">
                 <ctWinUi:DataGrid.Columns>
-                    <ctWinUi:DataGridTextColumn Header="Name" Binding="{Binding Name}" Tag="Name" />
-                    <ctWinUi:DataGridTextColumn Header="Email" Binding="{Binding EmailAddress}" Tag="Email" />
-                    <ctWinUi:DataGridTextColumn Header="Country" Binding="{Binding Country}" Tag="Country" />
-                    <ctWinUi:DataGridTextColumn Header="LTV" Binding="{Binding LtvDisplay}" Tag="LTV">
+                    <ctWinUi:DataGridTextColumn Header="Name" Binding="{Binding Name}" Tag="Name" Width="3*"/>
+                    <ctWinUi:DataGridTextColumn Header="Email" Binding="{Binding EmailAddress}" Tag="Email" Width="3*"/>
+                    <ctWinUi:DataGridTextColumn Header="Country" Binding="{Binding Country}" Tag="Country" Width="*"/>
+                    <ctWinUi:DataGridTextColumn Header="LTV" Binding="{Binding LtvDisplay}" Tag="LTV" Width="*">
                         <ctWinUi:DataGridTextColumn.CellStyle>
                             <Style TargetType="ctWinUi:DataGridCell">
                                 <Style.Setters>
