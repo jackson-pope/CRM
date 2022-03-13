@@ -21,9 +21,9 @@ namespace BackendTests
         {
             var data = new List<Customer>
                             {
-                                new Customer { Name = "Archie", EmailAddress = "overview.archie@example.com", Country="UK", Invoices = new List<Invoice> { new Invoice { InvoiceTotal = 10M } } },
-                                new Customer { Name = "Bertie", EmailAddress = "bertie@example.com", Country = "France", Invoices = new List<Invoice>() },
-                                new Customer { Name = "Chuck", EmailAddress = "c.overview@example.com", Country = "Belgium", Invoices = new List<Invoice> { new Invoice { InvoiceTotal = 20M } } }
+                                new Customer { Name = "Archie", Emails = new List<Email> { new Email { EmailAddress = "overview.archie@example.com" } }, Country="UK", Invoices = new List<Invoice> { new Invoice { InvoiceTotal = 10M } } },
+                                new Customer { Name = "Bertie", Emails = new List<Email> { new Email { EmailAddress = "bertie@example.com" } }, Country = "France", Invoices = new List<Invoice>() },
+                                new Customer { Name = "Chuck", Emails = new List<Email> { new Email { EmailAddress = "c.overview@example.com" } }, Country = "Belgium", Invoices = new List<Invoice> { new Invoice { InvoiceTotal = 20M } } }
                             }.AsQueryable();
 
             var mockSet = new Mock<DbSet<Customer>>();

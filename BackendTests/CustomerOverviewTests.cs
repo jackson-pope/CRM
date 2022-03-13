@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using NUnit.Framework;
 
@@ -14,7 +15,7 @@ namespace BackendTests
         public void Constructor_PopulatesWithFullCustomerHighlights()
         {
             // Arrange
-            var customer = new Customer { Name = "Archie", Country = "GB", EmailAddress = "archie@example.com" };
+            var customer = new Customer { Name = "Archie", Country = "GB", Emails = new List<Email> { new Email { EmailAddress = "archie@example.com" } } };
 
             //Act
             var overview = new CustomerOverview(customer);
@@ -22,7 +23,7 @@ namespace BackendTests
             //Assert
             Assert.That(overview.Name,         Is.EqualTo(customer.Name));
             Assert.That(overview.Country,      Is.EqualTo(customer.Country));
-            Assert.That(overview.EmailAddress, Is.EqualTo(customer.EmailAddress));
+            Assert.That(overview.EmailAddress, Is.EqualTo(customer.Emails.First().EmailAddress));
         }
 
         [Test]
@@ -32,7 +33,7 @@ namespace BackendTests
             var invoice1 = new Invoice { InvoiceTotal = 120.00M };
             var invoice2 = new Invoice { InvoiceTotal = 54.50M };
             var invoices = new List<Invoice> { invoice1, invoice2 };
-            var customer = new Customer { Name = "Archie", Country = "GB", EmailAddress = "archie@example.com", Invoices = invoices };
+            var customer = new Customer { Name = "Archie", Country = "GB", Emails = new List<Email> { new Email { EmailAddress = "archie@example.com" } }, Invoices = invoices };
 
             //Act
             var overview = new CustomerOverview(customer);
@@ -44,7 +45,7 @@ namespace BackendTests
         [Test]
         public void LtvDisplay_ForZero_IsAHyphen()
         {
-            var customer = new Customer { Name = "Archie", Country = "GB", EmailAddress = "archie@example.com" };
+            var customer = new Customer { Name = "Archie", Country = "GB", Emails = new List<Email> { new Email { EmailAddress = "archie@example.com" } } };
 
             //Act
             var overview = new CustomerOverview(customer);
@@ -59,7 +60,7 @@ namespace BackendTests
             var invoice1 = new Invoice { InvoiceTotal = 120.00M };
             var invoice2 = new Invoice { InvoiceTotal = 54.50M };
             var invoices = new List<Invoice> { invoice1, invoice2 };
-            var customer = new Customer { Name = "Archie", Country = "GB", EmailAddress = "archie@example.com", Invoices = invoices };
+            var customer = new Customer { Name = "Archie", Country = "GB", Emails = new List<Email> { new Email { EmailAddress = "archie@example.com" } }, Invoices = invoices };
 
             //Act
             var overview = new CustomerOverview(customer);

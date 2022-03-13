@@ -19,8 +19,8 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.Children>
-                    <ImageIcon Grid.Column="0"  Margin="7" Width="20" Height="20" Source="ms-appx:///Assets/filter.png"/>
-                    <TextBox Grid.Column="1" Margin="0, 7, 7, 7" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <ImageIcon Grid.Column="0" Margin="7" Width="20" Height="20" Source="ms-appx:///Assets/filter.png"/>
+                    <TextBox   Grid.Column="1" Margin="0, 7, 7, 7" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </Grid.Children>
             </Grid>
             <ctWinUi:DataGrid x:Name="DataGrid" Grid.Row="1"

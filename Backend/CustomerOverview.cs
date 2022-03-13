@@ -19,7 +19,7 @@ namespace Backend
             Id = customer.Id;
             Name = customer.Name ?? string.Empty;
             Country = customer.Country ?? string.Empty;
-            EmailAddress = customer.EmailAddress;
+            EmailAddress = customer.Emails.First().EmailAddress;
             LTV = customer.Invoices.Sum(i => i.InvoiceTotal);
             LtvDisplay = LTV == 0M ? "-" : LTV.ToString("C");
         }

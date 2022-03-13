@@ -7,12 +7,12 @@ namespace Backend.Models
     {
         public Customer()
         {
+            Emails = new HashSet<Email>();
             Invoices = new HashSet<Invoice>();
         }
 
         public int Id { get; set; }
         public string? Name { get; set; }
-        public string EmailAddress { get; set; } = null!;
         public string? PhoneNumber { get; set; }
         public string? Address1 { get; set; }
         public string? Address2 { get; set; }
@@ -24,6 +24,7 @@ namespace Backend.Models
         public string? KickstarterUsername { get; set; }
         public string? Comment { get; set; }
 
+        public virtual ICollection<Email> Emails { get; set; }
         public virtual ICollection<Invoice> Invoices { get; set; }
     }
 }

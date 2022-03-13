@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Models
 {
@@ -18,6 +15,7 @@ namespace Backend.Models
 
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Customer> Customers { get; set; } = null!;
+        public virtual DbSet<Email> Emails { get; set; } = null!;
         public virtual DbSet<Invoice> Invoices { get; set; } = null!;
         public virtual DbSet<LineItem> LineItems { get; set; } = null!;
         public virtual DbSet<OrderType> OrderTypes { get; set; } = null!;
@@ -63,8 +61,6 @@ namespace Backend.Models
 
                 entity.Property(e => e.Country).HasMaxLength(50);
 
-                entity.Property(e => e.EmailAddress).HasMaxLength(50);
-
                 entity.Property(e => e.KickstarterUsername).HasMaxLength(50);
 
                 entity.Property(e => e.Name).HasMaxLength(60);
@@ -73,6 +69,17 @@ namespace Backend.Models
                     .HasMaxLength(18)
                     .IsUnicode(false)
                     .IsFixedLength();
+            });
+
+            modelBuilder.Entity<Email>(entity =>
+            {
+                entity.Property(e => e.EmailAddress).HasMaxLength(50);
+
+                entity.HasOne(d => d.CustomerNavigation)
+                    .WithMany(p => p.Emails)
+                    .HasForeignKey(d => d.Customer)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Emails_ToCustomers");
             });
 
             modelBuilder.Entity<Invoice>(entity =>
