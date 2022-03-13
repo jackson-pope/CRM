@@ -22,8 +22,18 @@ namespace Backend.ViewModels
         private string _filter = string.Empty;
         public string? Filter { get => _filter; set { FilterCustomers(value); } }
 
-        private CustomerOverview? _selectedCustomer;
-        public CustomerOverview? SelectedCustomer { get => _selectedCustomer; set => SetProperty(ref _selectedCustomer, value); }
+        private CustomerOverview? _selectedOverview;
+        public CustomerOverview? SelectedOverview
+        {
+            get => _selectedOverview;
+            set
+            {
+                SelectCustomer(value);
+            }
+        }
+
+        private CustomerViewModel? _selectedCustomer;
+        public CustomerViewModel? SelectedCustomer { get => _selectedCustomer; }
 
         private List<CustomerOverview> _customers;
         public List<CustomerOverview> Customers { get => _customers; private set => SetProperty(ref _customers, value); }
@@ -85,5 +95,12 @@ namespace Backend.ViewModels
             }
             Customers = sorted.ToList();
         }
-   }
+
+        public void SelectCustomer(CustomerOverview? selected)
+        {
+            SetProperty(ref _selectedOverview, selected, "SelectedOverview");
+            var customer = _service.GetAllCustomers().FirstOrDefault(c => c.Id == (selected != null ? selected.Id : -1));
+            SetProperty(ref _selectedCustomer, (customer != null ? new CustomerViewModel(customer) : null), "SelectedCustomer");
+        }
+    }
 }

@@ -12,6 +12,12 @@
             <Style x:Key="HeadingStyle" TargetType="TextBlock">
                 <Setter Property="FontWeight" Value="Bold" />
                 <Setter Property="FontSize" Value="16" />
+                <Setter Property="Margin" Value="5,10,0,0" />
+            </Style>
+            <Style x:Key="FieldStyle" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="Normal" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Margin" Value="10,5,0,0" />
             </Style>
         </Grid.Resources>
 
@@ -40,7 +46,7 @@
                         CanUserSortColumns="True"
                         Sorting="DataGrid_Sorting"
                         SelectionMode="Single"
-                        SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
+                        SelectedItem="{Binding SelectedOverview, Mode=TwoWay}"
                         IsReadOnly="True"
                         VerticalScrollBarVisibility="Auto"
                         AlternatingRowBackground="LightGray">
@@ -61,7 +67,17 @@
             </ctWinUi:DataGrid>
             <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Name}" Style="{StaticResource HeadingStyle}"/>
             <StackPanel Grid.Column="1" Grid.Row="1">
-                
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="Address" Style="{StaticResource HeadingStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Address}" Style="{StaticResource FieldStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.CountryCode}" Style="{StaticResource FieldStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="Email Address" Style="{StaticResource HeadingStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.EmailAddresses}" Style="{StaticResource FieldStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="Phone number" Style="{StaticResource HeadingStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.PhoneNumber}" Style="{StaticResource FieldStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="LTV" Style="{StaticResource HeadingStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedOverview.LtvDisplay}" Style="{StaticResource FieldStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="Products" Style="{StaticResource HeadingStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Products}" Style="{StaticResource FieldStyle}"/>
             </StackPanel>
         </Grid.Children>
     </Grid>
