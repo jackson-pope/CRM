@@ -8,6 +8,13 @@
     mc:Ignorable="d">
 
     <Grid x:Name="MainGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.Resources>
+            <Style x:Key="HeadingStyle" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -33,6 +40,7 @@
                         CanUserSortColumns="True"
                         Sorting="DataGrid_Sorting"
                         SelectionMode="Single"
+                        SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
                         IsReadOnly="True"
                         VerticalScrollBarVisibility="Auto"
                         AlternatingRowBackground="LightGray">
@@ -51,6 +59,10 @@
                     </ctWinUi:DataGridTextColumn>
                 </ctWinUi:DataGrid.Columns>
             </ctWinUi:DataGrid>
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Name}" Style="{StaticResource HeadingStyle}"/>
+            <StackPanel Grid.Column="1" Grid.Row="1">
+                
+            </StackPanel>
         </Grid.Children>
     </Grid>
 </Window>

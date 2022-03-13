@@ -22,6 +22,9 @@ namespace Backend.ViewModels
         private string _filter = string.Empty;
         public string? Filter { get => _filter; set { FilterCustomers(value); } }
 
+        private CustomerOverview? _selectedCustomer;
+        public CustomerOverview? SelectedCustomer { get => _selectedCustomer; set => SetProperty(ref _selectedCustomer, value); }
+
         private List<CustomerOverview> _customers;
         public List<CustomerOverview> Customers { get => _customers; private set => SetProperty(ref _customers, value); }
 
