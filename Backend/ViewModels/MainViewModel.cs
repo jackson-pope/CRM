@@ -100,7 +100,7 @@ namespace Backend.ViewModels
         {
             SetProperty(ref _selectedOverview, selected, "SelectedOverview");
             var customer = _service.GetAllCustomers().FirstOrDefault(c => c.Id == (selected != null ? selected.Id : -1));
-            SetProperty(ref _selectedCustomer, (customer != null ? new CustomerViewModel(customer) : null), "SelectedCustomer");
+            SetProperty(ref _selectedCustomer, (customer != null ? new CustomerViewModel(customer, _service.GetAllProducts()) : null), "SelectedCustomer");
         }
     }
 }

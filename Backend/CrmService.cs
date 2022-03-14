@@ -22,7 +22,7 @@ namespace Backend
 
         public List<Customer> GetAllCustomers()
         {
-            return _context.Customers.Include(c => c.Invoices).Include(c => c.Emails).OrderBy(c => c.Name).ToList();
+            return _context.Customers.Include(c => c.Emails).Include(c => c.Invoices).ThenInclude(i => i.LineItems).OrderBy(c => c.Name).ToList();
         }
 
         public List<Product> GetAllProducts()
