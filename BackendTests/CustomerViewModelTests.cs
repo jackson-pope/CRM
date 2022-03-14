@@ -271,7 +271,7 @@ namespace BackendTests
                                                         });
 
             // Assert
-            Assert.That(vm.Products, Is.EqualTo("1x Deluxe FlickFleet\n2x Standard FlickFleet"));
+            Assert.That(vm.Products, Is.EqualTo("2x Deluxe FlickFleet\n1x Standard FlickFleet"));
         }
     }
 }
