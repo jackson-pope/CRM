@@ -68,16 +68,16 @@
             <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Name}" Style="{StaticResource HeadingStyle}"/>
             <StackPanel Grid.Column="1" Grid.Row="1">
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="Address" Style="{StaticResource HeadingStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Address}" Style="{StaticResource FieldStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.CountryCode}" Style="{StaticResource FieldStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Address}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.CountryCode}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="Email Address" Style="{StaticResource HeadingStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.EmailAddresses}" Style="{StaticResource FieldStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.EmailAddresses}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="Phone number" Style="{StaticResource HeadingStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.PhoneNumber}" Style="{StaticResource FieldStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.PhoneNumber}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="LTV" Style="{StaticResource HeadingStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedOverview.LtvDisplay}" Style="{StaticResource FieldStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedOverview.LtvDisplay}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
                 <TextBlock Grid.Column="1" Grid.Row="0" Text="Products" Style="{StaticResource HeadingStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Products}" Style="{StaticResource FieldStyle}"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Products}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
             </StackPanel>
         </Grid.Children>
     </Grid>
