@@ -24,5 +24,10 @@ namespace Backend
         {
             return _context.Customers.Include(c => c.Invoices).Include(c => c.Emails).OrderBy(c => c.Name).ToList();
         }
+
+        public List<Product> GetAllProducts()
+        {
+            return _context.Products.OrderBy(p => p.Sku).ToList();
+        }
     }
 }

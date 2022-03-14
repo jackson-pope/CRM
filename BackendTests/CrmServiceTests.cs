@@ -16,6 +16,7 @@ namespace BackendTests
         [Test]
         public void GetAllCustomers_sortsByName()
         {
+            // Arrange
             var data = new List<Customer>
                         {
                             new Customer { Name = "Bob" },
@@ -34,12 +35,40 @@ namespace BackendTests
 
             var service = new CrmService(mockContext.Object);
 
+            // Act
             var customers = service.GetAllCustomers();
 
-            Assert.AreEqual(3, customers.Count);
-            Assert.AreEqual("Archie",  customers[0].Name);
-            Assert.AreEqual("Bob",     customers[1].Name);
-            Assert.AreEqual("Charlie", customers[2].Name);
+            // Assert
+            CollectionAssert.AreEqual(new string[] { "Archie", "Bob", "Charlie" }, customers.Select(p => p.Name));
+        }
+
+        [Test]
+        public void GetAllProducts_ReturnsListSortedBySku()
+        {
+            // Arrange
+            var data = new List<Product>
+                        {
+                            new Product { Sku = "EYD0010", Description = "Last Game" },
+                            new Product { Sku = "EYD0002", Description = "Another Game" },
+                            new Product { Sku = "EYD0001", Description = "First Game" },
+                        }.AsQueryable();
+
+            var mockSet = new Mock<DbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+
+            var mockContext = new Mock<CrmContext>();
+            mockContext.Setup(m => m.Products).Returns(mockSet.Object);
+
+            var service = new CrmService(mockContext.Object);
+
+            // Act
+            var products = service.GetAllProducts();
+
+            // Assert
+            CollectionAssert.AreEqual(new string[] { "First Game", "Another Game", "Last Game" }, products.Select(p => p.Description));
         }
     }
 }
