@@ -15,7 +15,7 @@ namespace BackendTests
     [TestFixture]
     public class MainViewModelTests
     {
-        private IServiceProvider _provider;
+        private readonly IServiceProvider _provider;
 
         public MainViewModelTests()
         {

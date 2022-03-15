@@ -14,7 +14,7 @@ namespace Backend
         public CustomerOverview(Customer customer)
         {
             if (customer == null)
-                throw new ArgumentNullException("Customer cannot be null when creating an overview");
+                throw new ArgumentNullException(nameof(customer));
 
             Id = customer.Id;
             Name = customer.Name ?? string.Empty;

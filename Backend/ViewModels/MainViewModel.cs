@@ -13,8 +13,8 @@ namespace Backend.ViewModels
 
     public class MainViewModel : ObservableObject
     {
-        private CrmService _service;
-        private List<CustomerOverview> _allCustomers;
+        private readonly CrmService _service;
+        private readonly List<CustomerOverview> _allCustomers;
 
         public string? SortedColumn { get; private set; }
         public SortDirection SortedDirection { get; private set; }
@@ -40,8 +40,13 @@ namespace Backend.ViewModels
 
         public MainViewModel(IServiceProvider provider)
         {
-            _service = new CrmService((CrmContext)provider.GetService(typeof(CrmContext)));
+            var context = (CrmContext?)provider.GetService(typeof(CrmContext));
+            if (context == null)
+                throw new Exception("Cannot find a CrmContext in the service provider");
+
+            _service = new CrmService(context);
             _allCustomers = _service.GetAllCustomers().Select(c => new CustomerOverview(c)).ToList();
+            _customers = new List<CustomerOverview>();
 
             SortCustomers("LTV", SortDirection.Descending);
         }
@@ -53,9 +58,9 @@ namespace Backend.ViewModels
             BuildCustomerList();
         }
 
-        public void FilterCustomers(string filter)
+        public void FilterCustomers(string? filter)
         {
-            SetProperty(ref _filter, filter);
+            SetProperty(ref _filter, filter ?? string.Empty);
 
             BuildCustomerList();
         }
@@ -63,7 +68,7 @@ namespace Backend.ViewModels
         public void BuildCustomerList()
         {
             var filtered = _allCustomers.Where(c => c.Name.Contains(_filter) || c.EmailAddress.Contains(_filter));
-            IEnumerable<CustomerOverview> sorted = Enumerable.Empty<CustomerOverview>();
+            IEnumerable<CustomerOverview> sorted;
             switch (SortedColumn)
             {
                 case "Name":
@@ -91,6 +96,7 @@ namespace Backend.ViewModels
                         sorted = filtered.OrderByDescending(c => c.LTV);
                     break;
                 default:
+                    sorted = filtered;
                     break;
             }
             Customers = sorted.ToList();
@@ -98,9 +104,9 @@ namespace Backend.ViewModels
 
         public void SelectCustomer(CustomerOverview? selected)
         {
-            SetProperty(ref _selectedOverview, selected, "SelectedOverview");
+            SetProperty(ref _selectedOverview, selected, nameof(SelectedOverview));
             var customer = _service.GetAllCustomers().FirstOrDefault(c => c.Id == (selected != null ? selected.Id : -1));
-            SetProperty(ref _selectedCustomer, (customer != null ? new CustomerViewModel(customer, _service.GetAllProducts()) : null), "SelectedCustomer");
+            SetProperty(ref _selectedCustomer, (customer != null ? new CustomerViewModel(customer, _service.GetAllProducts()) : null), nameof(SelectedCustomer));
         }
     }
 }

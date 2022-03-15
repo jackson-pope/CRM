@@ -5,7 +5,7 @@ namespace Backend
 {
     public class CrmService
     {
-        private CrmContext _context;
+        private readonly CrmContext _context;
 
         public CrmService(CrmContext context)
         {
