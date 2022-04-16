@@ -1,4 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Windows.UI;
+using Microsoft.UI.Xaml.Media;
 
 using Backend.Models;
 
@@ -38,7 +40,10 @@ namespace Backend.ViewModels
         private List<CustomerOverview> _customers;
         public List<CustomerOverview> Customers { get => _customers; private set => SetProperty(ref _customers, value); }
 
-        public MainViewModel(IServiceProvider provider)
+        private readonly SolidColorBrush _selectedBrush;
+        public SolidColorBrush SelectedBrush { get => _selectedBrush; }
+
+         public MainViewModel(IServiceProvider provider)
         {
             var context = (CrmContext?)provider.GetService(typeof(CrmContext));
             if (context == null)
@@ -49,6 +54,8 @@ namespace Backend.ViewModels
             _customers = new List<CustomerOverview>();
 
             SortCustomers("LTV", SortDirection.Descending);
+
+            _selectedBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         }
         public void SortCustomers(string columnName, SortDirection direction)
         {
@@ -107,6 +114,8 @@ namespace Backend.ViewModels
             SetProperty(ref _selectedOverview, selected, nameof(SelectedOverview));
             var customer = _service.GetAllCustomers().FirstOrDefault(c => c.Id == (selected != null ? selected.Id : -1));
             SetProperty(ref _selectedCustomer, (customer != null ? new CustomerViewModel(customer, _service.GetAllProducts()) : null), nameof(SelectedCustomer));
+
+            SelectedBrush.Color = (selected == null) ? Color.FromArgb(0,0,0,0) : Color.FromArgb(0xFF, 0x66, 0xAE, 0xE5);
         }
     }
 }

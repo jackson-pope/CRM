@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI;
 
 using Moq;
 using NUnit.Framework;
 
 using Backend.Models;
 using Backend.ViewModels;
+using Microsoft.UI.Xaml.Media;
 
 namespace BackendTests
 {
@@ -19,24 +21,41 @@ namespace BackendTests
 
         public MainViewModelTests()
         {
-            var data = new List<Customer>
+            var mockContext = new Mock<CrmContext>();
+
+            var customers = new List<Customer>
                             {
                                 new Customer { Name = "Archie", Emails = new List<Email> { new Email { EmailAddress = "overview.archie@example.com" } }, Country="UK", Invoices = new List<Invoice> { new Invoice { InvoiceTotal = 10M } } },
                                 new Customer { Name = "Bertie", Emails = new List<Email> { new Email { EmailAddress = "bertie@example.com" } }, Country = "France", Invoices = new List<Invoice>() },
                                 new Customer { Name = "Chuck", Emails = new List<Email> { new Email { EmailAddress = "c.overview@example.com" } }, Country = "Belgium", Invoices = new List<Invoice> { new Invoice { InvoiceTotal = 20M } } }
                             }.AsQueryable();
 
-            var mockSet = new Mock<DbSet<Customer>>();
-            mockSet.As<IQueryable<Customer>>().Setup(m => m.Provider).Returns(data.Provider);
-            mockSet.As<IQueryable<Customer>>().Setup(m => m.Expression).Returns(data.Expression);
-            mockSet.As<IQueryable<Customer>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockSet.As<IQueryable<Customer>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+            var mockCustomerSet = new Mock<DbSet<Customer>>();
+            mockCustomerSet.As<IQueryable<Customer>>().Setup(m => m.Provider).Returns(customers.Provider);
+            mockCustomerSet.As<IQueryable<Customer>>().Setup(m => m.Expression).Returns(customers.Expression);
+            mockCustomerSet.As<IQueryable<Customer>>().Setup(m => m.ElementType).Returns(customers.ElementType);
+            mockCustomerSet.As<IQueryable<Customer>>().Setup(m => m.GetEnumerator()).Returns(customers.GetEnumerator());
 
-            var mockContext = new Mock<CrmContext>();
-            mockContext.Setup(m => m.Customers).Returns(mockSet.Object);
+            mockContext.Setup(m => m.Customers).Returns(mockCustomerSet.Object);
+
+            var products = new List<Product>
+                            {
+                                new Product { Sku = "EYD0003", Description = "A game" },
+                                new Product { Sku = "EYD0004", Description = "Another game" }
+                            }.AsQueryable();
+
+            var mockProductSet = new Mock<DbSet<Product>>();
+
+            mockProductSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(products.Provider);
+            mockProductSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(products.Expression);
+            mockProductSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(products.ElementType);
+            mockProductSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(products.GetEnumerator());
+
+            mockContext.Setup(m => m.Products).Returns(mockProductSet.Object);
 
             var services = new ServiceCollection();
-            services.AddSingleton<CrmContext>(mockContext.Object);
+            services.AddSingleton(mockContext.Object);
+            services.AddSingleton(new BrushFactory());
             _provider = services.BuildServiceProvider();
         }
 
@@ -311,6 +330,32 @@ namespace BackendTests
 
             // Assert
             CollectionAssert.AreEqual(new string[] { "Chuck", "Archie", "Bertie" }, vm.Customers.Select(c => c.Name));
+        }
+
+        [Test]
+        public void SelectionBrushColour_AfterSelectingNoCustomer_ReturnsTransparent()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+
+            // Act
+            vm.SelectCustomer(null);
+
+            // Assert
+            Assert.That(vm.SelectedBrush.Color, Is.EqualTo(Colors.Transparent));
+        }
+
+        [Test]
+        public void SelectionBrushColour_AfterSelectingACustomer_Returns66AEE5()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+
+            // Act
+            vm.SelectCustomer(null);
+
+            // Assert
+            Assert.That(vm.SelectedBrush.Color, Is.EqualTo(ColorHelper.FromArgb(0xFF, 0x66, 0xAE, 0xE5)));
         }
     }
 }

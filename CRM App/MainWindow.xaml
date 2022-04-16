@@ -23,14 +23,27 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="20" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.Children>
-            <Grid Grid.Row="0" Grid.Column="0">
+            <MenuBar Grid.Row="0">
+                <MenuBarItem Title="File">
+                    <MenuFlyoutItem Text="Export"
+                                Click="MenuFlyoutExport_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="E"
+                                             Modifiers="Control" />
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuBarItem>
+            </MenuBar>
+            <Grid Grid.Row="1" Grid.Column="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -40,7 +53,7 @@
                     <TextBox   Grid.Column="1" Margin="0, 7, 7, 7" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </Grid.Children>
             </Grid>
-            <ctWinUi:DataGrid x:Name="DataGrid" Grid.Row="1"
+            <ctWinUi:DataGrid x:Name="DataGrid" Grid.Row="2"
                         ItemsSource="{Binding Customers}"
                         AutoGenerateColumns="False"
                         CanUserSortColumns="True"
@@ -65,20 +78,24 @@
                     </ctWinUi:DataGridTextColumn>
                 </ctWinUi:DataGrid.Columns>
             </ctWinUi:DataGrid>
-            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Name}" Style="{StaticResource HeadingStyle}"/>
-            <StackPanel Grid.Column="1" Grid.Row="1">
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="Address" Style="{StaticResource HeadingStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Address}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.CountryCode}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="Email Address" Style="{StaticResource HeadingStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.EmailAddresses}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="Phone number" Style="{StaticResource HeadingStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.PhoneNumber}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="LTV" Style="{StaticResource HeadingStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedOverview.LtvDisplay}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="Products" Style="{StaticResource HeadingStyle}"/>
-                <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedCustomer.Products}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
-            </StackPanel>
+            <Rectangle Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Fill="{Binding SelectedBrush}" />
+            <Rectangle Grid.Column="2" Grid.Row="1" Fill="{Binding SelectedBrush}" />
+            <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding SelectedCustomer.Name}" Style="{StaticResource HeadingStyle}" />
+            <ScrollViewer Grid.Column="2" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <TextBlock Text="Address" Style="{StaticResource HeadingStyle}"/>
+                    <TextBlock Text="{Binding SelectedCustomer.Address}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
+                    <TextBlock Text="{Binding SelectedCustomer.CountryCode}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
+                    <TextBlock Text="Email Address" Style="{StaticResource HeadingStyle}"/>
+                    <TextBlock Text="{Binding SelectedCustomer.EmailAddresses}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
+                    <TextBlock Text="Phone number" Style="{StaticResource HeadingStyle}"/>
+                    <TextBlock Text="{Binding SelectedCustomer.PhoneNumber}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
+                    <TextBlock Text="LTV" Style="{StaticResource HeadingStyle}"/>
+                    <TextBlock Text="{Binding SelectedOverview.LtvDisplay}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
+                    <TextBlock Text="Products" Style="{StaticResource HeadingStyle}"/>
+                    <TextBlock Text="{Binding SelectedCustomer.Products}" Style="{StaticResource FieldStyle}" IsTextSelectionEnabled="True"/>
+                </StackPanel>
+            </ScrollViewer>
         </Grid.Children>
     </Grid>
 </Window>
