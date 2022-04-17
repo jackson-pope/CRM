@@ -1,6 +1,12 @@
-﻿using Backend.ViewModels;
+﻿using System;
+using System.Collections.Generic;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+
+using Backend.ViewModels;
+using System.IO;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -20,6 +26,19 @@ namespace CRM_App
             this.InitializeComponent();
             _viewModel = (MainViewModel)App.Current.Services.GetService(typeof(MainViewModel));
             MainGrid.DataContext = _viewModel;
+        }
+
+        private async void MenuFlyoutExport_Click(object sender, RoutedEventArgs e)
+        {
+            var savePicker = new FileSavePicker();
+            savePicker.DefaultFileExtension = ".csv";
+            savePicker.SuggestedFileName = "crm-export.csv";
+            savePicker.FileTypeChoices.Add("CSV UTF-8 (comma delimited)", new List<string>() { ".csv" });
+            var hwnd = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle;
+            WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hwnd);
+            var stFile = await savePicker.PickSaveFileAsync();
+
+            await FileIO.WriteTextAsync(stFile, _viewModel.Export());
         }
 
         private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)

@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 using Backend.Models;
 using Backend.ViewModels;
-using Microsoft.UI.Xaml.Media;
 
 namespace BackendTests
 {
@@ -55,7 +54,6 @@ namespace BackendTests
 
             var services = new ServiceCollection();
             services.AddSingleton(mockContext.Object);
-            services.AddSingleton(new BrushFactory());
             _provider = services.BuildServiceProvider();
         }
 
@@ -356,6 +354,19 @@ namespace BackendTests
 
             // Assert
             Assert.That(vm.SelectedBrush.Color, Is.EqualTo(ColorHelper.FromArgb(0xFF, 0x66, 0xAE, 0xE5)));
+        }
+
+        [Test]
+        public void Export_WithCustomers_CreatesCsv()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+
+            // Act
+            var export = vm.Export();
+
+            // Assert
+            Assert.That(export, Is.EqualTo(string.Empty));
         }
     }
 }

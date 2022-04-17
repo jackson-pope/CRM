@@ -3,6 +3,7 @@ using Windows.UI;
 using Microsoft.UI.Xaml.Media;
 
 using Backend.Models;
+using System.Text;
 
 namespace Backend.ViewModels
 {
@@ -116,6 +117,18 @@ namespace Backend.ViewModels
             SetProperty(ref _selectedCustomer, (customer != null ? new CustomerViewModel(customer, _service.GetAllProducts()) : null), nameof(SelectedCustomer));
 
             SelectedBrush.Color = (selected == null) ? Color.FromArgb(0,0,0,0) : Color.FromArgb(0xFF, 0x66, 0xAE, 0xE5);
+        }
+
+        public string Export()
+        {
+            var builder = new StringBuilder();
+
+            foreach (var customer in Customers)
+            {
+                builder.Append(String.Format("{0}, {1}\n", customer.EmailAddress, customer.LTV));
+            }
+
+            return builder.ToString();
         }
     }
 }
