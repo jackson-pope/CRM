@@ -353,7 +353,7 @@ namespace BackendTests
             var export = vm.Export();
 
             // Assert
-            Assert.That(vm.SelectedCustomers.Count, Is.EqualTo(0));
+            Assert.That(vm.CombineCustomersCommand.CanExecute(null), Is.False);
         }
 
         [Test]
@@ -367,7 +367,7 @@ namespace BackendTests
             vm.SelectCustomers(selected);
 
             // Assert
-            CollectionAssert.AreEqual(vm.SelectedCustomers, selected);
+            Assert.That(vm.CombineCustomersCommand.CanExecute(null), Is.False);
         }
 
         [Test]
@@ -381,7 +381,7 @@ namespace BackendTests
             vm.SelectCustomers(selected);
 
             // Assert
-            CollectionAssert.AreEqual(vm.SelectedCustomers, selected);
+            Assert.That(vm.CombineCustomersCommand.CanExecute(null), Is.True);
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Backend.ViewModels
 
         private bool CanCombineCustomers()
         {
-            throw new NotImplementedException();
+            return _selectedCustomers.Count() > 1;
         }
 
         private void CombineCustomers()
