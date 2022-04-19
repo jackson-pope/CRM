@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
+using Backend;
 using Backend.ViewModels;
-using System.IO;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -73,6 +75,11 @@ namespace CRM_App
                     e.Column.SortDirection = DataGridSortDirection.Descending;
                 }
             }
+        }
+
+        private void DataGrid_SelectionChanged(object sender, Microsoft.UI.Xaml.Controls.SelectionChangedEventArgs e)
+        {
+            _viewModel.SelectCustomers(((DataGrid)sender).SelectedItems.Cast<CustomerOverview>());
         }
     }
 }

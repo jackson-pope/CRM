@@ -4,6 +4,9 @@ using Microsoft.UI.Xaml.Media;
 
 using Backend.Models;
 using System.Text;
+using Microsoft.UI.Xaml.Input;
+using System.Windows.Input;
+using Microsoft.Toolkit.Mvvm.Input;
 
 namespace Backend.ViewModels
 {
@@ -25,6 +28,9 @@ namespace Backend.ViewModels
         private string _filter = string.Empty;
         public string? Filter { get => _filter; set { FilterCustomers(value); } }
 
+        private ICommand _combineCustomersCommand;
+        public ICommand CombineCustomersCommand { get => _combineCustomersCommand; }
+
         private CustomerOverview? _selectedOverview;
         public CustomerOverview? SelectedOverview
         {
@@ -38,13 +44,13 @@ namespace Backend.ViewModels
         private CustomerViewModel? _selectedCustomer;
         public CustomerViewModel? SelectedCustomer { get => _selectedCustomer; }
 
+        private IEnumerable<CustomerOverview> _selectedCustomers;
+        public IEnumerable<CustomerOverview> SelectedCustomers { get => _selectedCustomers; }
+
         private List<CustomerOverview> _customers;
         public List<CustomerOverview> Customers { get => _customers; private set => SetProperty(ref _customers, value); }
 
-        private readonly SolidColorBrush _selectedBrush;
-        public SolidColorBrush SelectedBrush { get => _selectedBrush; }
-
-         public MainViewModel(IServiceProvider provider)
+        public MainViewModel(IServiceProvider provider)
         {
             var context = (CrmContext?)provider.GetService(typeof(CrmContext));
             if (context == null)
@@ -56,8 +62,21 @@ namespace Backend.ViewModels
 
             SortCustomers("LTV", SortDirection.Descending);
 
-            _selectedBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            _combineCustomersCommand = new RelayCommand(new Action(CombineCustomers), CanCombineCustomers);
+
+            _selectedCustomers = Enumerable.Empty<CustomerOverview>();
         }
+
+        private bool CanCombineCustomers()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CombineCustomers()
+        {
+            throw new NotImplementedException();
+        }
+
         public void SortCustomers(string columnName, SortDirection direction)
         {
             SortedColumn = columnName;
@@ -110,13 +129,16 @@ namespace Backend.ViewModels
             Customers = sorted.ToList();
         }
 
+        public void SelectCustomers(IEnumerable<CustomerOverview> selected)
+        {
+            _selectedCustomers = selected;
+        }
+
         public void SelectCustomer(CustomerOverview? selected)
         {
             SetProperty(ref _selectedOverview, selected, nameof(SelectedOverview));
             var customer = _service.GetAllCustomers().FirstOrDefault(c => c.Id == (selected != null ? selected.Id : -1));
             SetProperty(ref _selectedCustomer, (customer != null ? new CustomerViewModel(customer, _service.GetAllProducts()) : null), nameof(SelectedCustomer));
-
-            SelectedBrush.Color = (selected == null) ? Color.FromArgb(0,0,0,0) : Color.FromArgb(0xFF, 0x66, 0xAE, 0xE5);
         }
 
         public string Export()

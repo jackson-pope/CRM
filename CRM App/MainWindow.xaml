@@ -42,6 +42,15 @@
                         </MenuFlyoutItem.KeyboardAccelerators>
                     </MenuFlyoutItem>
                 </MenuBarItem>
+                <MenuBarItem Title="Customer">
+                    <MenuFlyoutItem Text="Combine Customers"
+                                Command="{Binding CombineCustomersCommand}">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="C"
+                                             Modifiers="Menu" />
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuBarItem>
             </MenuBar>
             <Grid Grid.Row="1" Grid.Column="0">
                 <Grid.ColumnDefinitions>
@@ -58,8 +67,9 @@
                         AutoGenerateColumns="False"
                         CanUserSortColumns="True"
                         Sorting="DataGrid_Sorting"
-                        SelectionMode="Single"
+                        SelectionMode="Extended"
                         SelectedItem="{Binding SelectedOverview, Mode=TwoWay}"
+                        SelectionChanged="DataGrid_SelectionChanged"
                         IsReadOnly="True"
                         VerticalScrollBarVisibility="Auto"
                         AlternatingRowBackground="LightGray">
@@ -78,8 +88,8 @@
                     </ctWinUi:DataGridTextColumn>
                 </ctWinUi:DataGrid.Columns>
             </ctWinUi:DataGrid>
-            <Rectangle Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Fill="{Binding SelectedBrush}" />
-            <Rectangle Grid.Column="2" Grid.Row="1" Fill="{Binding SelectedBrush}" />
+            <Rectangle Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" />
+            <Rectangle Grid.Column="2" Grid.Row="1" />
             <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding SelectedCustomer.Name}" Style="{StaticResource HeadingStyle}" />
             <ScrollViewer Grid.Column="2" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel>

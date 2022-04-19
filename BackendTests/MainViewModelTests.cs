@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI;
 
 using Moq;
 using NUnit.Framework;
 
+using Backend;
 using Backend.Models;
 using Backend.ViewModels;
 
@@ -331,32 +331,6 @@ namespace BackendTests
         }
 
         [Test]
-        public void SelectionBrushColour_AfterSelectingNoCustomer_ReturnsTransparent()
-        {
-            // Arrange
-            var vm = new MainViewModel(_provider);
-
-            // Act
-            vm.SelectCustomer(null);
-
-            // Assert
-            Assert.That(vm.SelectedBrush.Color, Is.EqualTo(Colors.Transparent));
-        }
-
-        [Test]
-        public void SelectionBrushColour_AfterSelectingACustomer_Returns66AEE5()
-        {
-            // Arrange
-            var vm = new MainViewModel(_provider);
-
-            // Act
-            vm.SelectCustomer(null);
-
-            // Assert
-            Assert.That(vm.SelectedBrush.Color, Is.EqualTo(ColorHelper.FromArgb(0xFF, 0x66, 0xAE, 0xE5)));
-        }
-
-        [Test]
         public void Export_WithCustomers_CreatesCsv()
         {
             // Arrange
@@ -366,7 +340,48 @@ namespace BackendTests
             var export = vm.Export();
 
             // Assert
-            Assert.That(export, Is.EqualTo(string.Empty));
+            Assert.That(export, Is.EqualTo("c.overview@example.com, 20\noverview.archie@example.com, 10\nbertie@example.com, 0\n"));
+        }
+
+        [Test]
+        public void CanCombine_WithNoCustomerSelected_ReturnsFalse()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+
+            // Act
+            var export = vm.Export();
+
+            // Assert
+            Assert.That(vm.SelectedCustomers.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CanCombine_WithOneCustomerSelected_ReturnsFalse()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+            var selected = new List<CustomerOverview> { vm.Customers[0] };
+
+            // Act
+            vm.SelectCustomers(selected);
+
+            // Assert
+            CollectionAssert.AreEqual(vm.SelectedCustomers, selected);
+        }
+
+        [Test]
+        public void CanCombine_WithMoreThanOneCustomerSelected_ReturnsTrue()
+        {
+            // Arrange
+            var vm = new MainViewModel(_provider);
+            var selected = new List<CustomerOverview> { vm.Customers[0], vm.Customers[2] };
+
+            // Act
+            vm.SelectCustomers(selected);
+
+            // Assert
+            CollectionAssert.AreEqual(vm.SelectedCustomers, selected);
         }
     }
 }
