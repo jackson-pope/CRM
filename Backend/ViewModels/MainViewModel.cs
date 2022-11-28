@@ -94,7 +94,7 @@ namespace Backend.ViewModels
 
         public void BuildCustomerList()
         {
-            var filtered = _allCustomers.Where(c => c.Name.Contains(_filter) || c.EmailAddress.Contains(_filter));
+            var filtered = _allCustomers.Where(c => c.Name.Contains(_filter, StringComparison.InvariantCultureIgnoreCase) || c.EmailAddress.Contains(_filter, StringComparison.InvariantCultureIgnoreCase));
             IEnumerable<CustomerOverview> sorted;
             switch (SortedColumn)
             {
